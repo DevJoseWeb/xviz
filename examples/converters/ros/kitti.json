@@ -1,0 +1,32 @@
+{
+  "topicConfig": {
+    "topics": [
+      "/kitti/oxts/imu",
+      "/kitti/oxts/gps/fix",
+      "/kitti/oxts/gps/vel",
+      "/kitti/camera_color_left/image_raw",
+      "/kitti/velo/pointcloud"
+    ]
+  },
+  "mapping": [
+    { 
+      "topic": "/kitti/oxts/gps/fix",
+      "config": {
+        "xvizStream": "/vehicle_pose",
+        "imuTopic": "/kitti/oxts/imu"
+      }
+    },
+    {
+      "topic": "/kitti/camera_color_left/image_raw",
+      "config": {
+        "xvizStream": "/vehicle/camera/center_front"
+      }
+    },
+    {
+      "topic": "/kitti/velo/pointcloud",
+      "config": {
+        "altFrameId": "velo_link"
+      }
+    }
+  ]
+}

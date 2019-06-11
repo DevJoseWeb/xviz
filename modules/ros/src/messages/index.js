@@ -15,6 +15,7 @@ import Converter from './converter';
 import {GeometryPoseStamped} from './geometry-posestamped-converter';
 import {NavPath} from './nav-path-converter';
 import {SensorPointCloud2} from './sensor-pointcloud2-converter';
+import {SensorNavSatFix} from './sensor-navsatfix-converter';
 import {SensorImage} from './sensor-image-converter';
 import {SensorCompressedImage} from './sensor-compressedimage-converter';
 import {VisualizationMarker} from './visualization-marker-converter';
@@ -25,6 +26,7 @@ export {
   GeometryPoseStamped,
   NavPath,
   SensorPointCloud2,
+  SensorNavSatFix,
   SensorImage,
   SensorCompressedImage,
   VisualizationMarker,
@@ -35,8 +37,9 @@ export const defaultConverters = [
   GeometryPoseStamped,
   NavPath,
   SensorPointCloud2,
-  SensorCompressedImage,
+  SensorNavSatFix,
   SensorImage,
+  SensorCompressedImage,
   VisualizationMarker,
   VisualizationMarkerArray
 ];

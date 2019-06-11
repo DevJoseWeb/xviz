@@ -102,7 +102,10 @@ export class SensorPointCloud2 extends Converter {
         radiusPixels: 3
       });
 
-    const pose = (frameIdToPoseMap || {}).velodyne;
+    // By convention velodyne is common, but it others may be used.
+    const frameId = this.config.altFrameId || 'velodyne';
+    const pose = (frameIdToPoseMap || {})[frameId];
+
     if (pose) {
       streamMetadata
         .pose(_.pick(pose, ['x', 'y', 'z']), _.pick(pose, ['pitch', 'roll', 'yaw']))

@@ -1,7 +1,5 @@
 import {
-  ROSBAGProvider,
-  ROSXVIZConverter,
-  ROS2XVIZFactory
+  ROSXVIZConverter
 } from '@xviz/ros';
 
 import {setupCustomProvider} from './setup-custom-provider';

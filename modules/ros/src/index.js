@@ -24,6 +24,7 @@ export {
   NavPath,
   SensorPointCloud2,
   SensorImage,
+  SensorNavSatFix,
   SensorCompressedImage,
   VisualizationMarker,
   VisualizationMarkerArray,

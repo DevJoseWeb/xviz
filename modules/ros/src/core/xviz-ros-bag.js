@@ -36,7 +36,7 @@ export class XVIZROSBag {
     const context = {};
     await this._initBag(context, bag);
 
-    this._topicMessageTypes = this.gatherTopics(bag);
+    this.topicMessageTypes = this._gatherTopics(bag);
 
     this._initTopics(context, this.topicMessageTypes, ros2xviz);
 
@@ -58,12 +58,13 @@ export class XVIZROSBag {
    */
   async _initBag(context, bag) {
     const TF = '/tf';
+    const TF_STATIC = '/tf_static';
 
     context.start_time = TimeUtil.toDate(bag.startTime).getTime() / 1e3;
     context.end_time = TimeUtil.toDate(bag.endTime).getTime() / 1e3;
 
     const frameIdToPoseMap = {};
-    await bag.readMessages({topics: [TF]}, ({topic, message}) => {
+    await bag.readMessages({topics: [TF, TF_STATIC]}, ({topic, message}) => {
       message.transforms.forEach(t => {
         frameIdToPoseMap[t.child_frame_id] = {
           ...t.transform.translation,
@@ -81,7 +82,6 @@ export class XVIZROSBag {
 
     for (const conn in bag.connections) {
       const {topic, type} = bag.connections[conn];
-
       // Filter if 'topics' are provided
       if (!this.topics || this.topics.includes(topic)) {
 
