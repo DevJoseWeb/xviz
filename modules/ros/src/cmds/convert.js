@@ -18,7 +18,7 @@ import {FileSource, FileSink} from '@xviz/io/node';
 import {XVIZProviderFactory} from '@xviz/io';
 
 import {ROS2XVIZFactory} from '../core/ros-2-xviz-factory';
-import {ROSBAGProvider} from '../providers/rosbag-provider';
+import {ROSBagProvider} from '../providers/rosbag-provider';
 import {defaultConverters} from '../messages';
 
 import process from 'process';
@@ -72,7 +72,7 @@ export class ROSXVIZConverter {
     });
 
     if (!provider) {
-      throw new Error('Failed to create ROSBAGProvider');
+      throw new Error('Failed to create ROSBagProvider');
     }
 
     // This abstracts the details of the filenames expected by our server
@@ -134,7 +134,7 @@ function signalWriteIndexOnInterrupt(writer) {
   });
 }
 
-async function registerROSBAGProvider(bagPath, rosConfig, args) {
+async function registerROSBagProvider(bagPath, rosConfig, args) {
   console.log(`Converting data at ${bagPath}`); // eslint-disable-line
   if (rosConfig) {
     console.log(`Using config ${rosConfig}`); // eslint-disable-line
@@ -158,12 +158,12 @@ async function registerROSBAGProvider(bagPath, rosConfig, args) {
   };
 
   // root, dataProvider, options
-  console.log('Adding ROSBAG');
-  XVIZProviderFactory.addProviderClass(ROSBAGProvider, rosbagProviderConfig);
+  console.log('Adding ROSBag');
+  XVIZProviderFactory.addProviderClass(ROSBagProvider, rosbagProviderConfig);
 }
 
 export async function Convert(args) {
-  await registerROSBAGProvider(args.bag, args.rosConfig, args);
+  await registerROSBagProvider(args.bag, args.rosConfig, args);
 
   const converter = new ROSXVIZConverter();  
   await converter.execute(args);

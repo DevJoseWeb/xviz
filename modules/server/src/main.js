@@ -22,7 +22,7 @@ import {XVIZProviderFactory} from '@xviz/io';
 
 // For default command automatically support scenarios
 import {ScenarioProvider} from './scenarios';
-import {ROSBAGProvider, ROS2XVIZFactory, defaultConverters} from '@xviz/ros';
+import {ROSBagProvider, ROS2XVIZFactory, defaultConverters} from '@xviz/ros';
 
 // Class to make it easier to create a server with a custom provider
 export class XVIZServerMain {
@@ -54,7 +54,7 @@ export class XVIZServerMain {
     this.setupProviders();
   }
 
-  // Default server will add Scenarios & ROSBAG support
+  // Default server will add Scenarios & ROSBag support
   setupProviders() {
     XVIZProviderFactory.addProviderClass(ScenarioProvider);
 
@@ -77,7 +77,7 @@ export class XVIZServerMain {
       ros2xvizFactory,
       ...config
     };
-    XVIZProviderFactory.addProviderClass(ROSBAGProvider, rosbagProviderConfig);
+    XVIZProviderFactory.addProviderClass(ROSBagProvider, rosbagProviderConfig);
   }
 
   execute() {

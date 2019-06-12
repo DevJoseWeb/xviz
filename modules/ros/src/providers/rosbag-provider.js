@@ -52,7 +52,7 @@ class MessageIterator {
   }
 }
 
-export class ROSBAGProvider {
+export class ROSBagProvider {
   constructor({root, options}) {
     this.bagPath = root.endsWith('.bag') ? root : `${root}.bag`;
     this.BagClass = (options && options.BagClass) || XVIZROSBag;
@@ -68,7 +68,7 @@ export class ROSBAGProvider {
     this.ros2xviz = null;
 
     if (!this.ros2xvizFactory) {
-      throw new Error('The ROSBAGProvider requires a ROS2XVIZFactory instance');
+      throw new Error('The ROSBagProvider requires a ROS2XVIZFactory instance');
     }
   }
 

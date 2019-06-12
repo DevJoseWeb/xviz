@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import {
-  ROSBAGProvider,
+  ROSBagProvider,
   ROS2XVIZFactory
 } from '@xviz/ros';
 
@@ -45,5 +45,5 @@ export function setupCustomProvider(options) {
     BagClass: KittiBag,
     ros2xvizFactory,
   };
-  XVIZProviderFactory.addProviderClass(ROSBAGProvider, rosbagProviderConfig);
+  XVIZProviderFactory.addProviderClass(ROSBagProvider, rosbagProviderConfig);
 }

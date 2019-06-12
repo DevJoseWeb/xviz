@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 export {XVIZROSBag} from './core/xviz-ros-bag';
-export {ROSBAGProvider} from './providers/rosbag-provider';
+export {ROSBagProvider} from './providers/rosbag-provider';
 export {quaternionToEuler} from './common/quaternion';
 // TODO: move this to common or core
 export {ROSXVIZConverter} from './cmds';
