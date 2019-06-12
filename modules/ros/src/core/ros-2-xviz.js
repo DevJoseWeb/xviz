@@ -130,12 +130,11 @@ export class ROS2XVIZConverter {
     this.instances = instances;
   }
 
-  async buildMetadata(metadataBuilder, aux) {
-    this.log(`ROS2XVIZConverter buildMetadata`);
+  buildMetadata(metadataBuilder, aux) {
     // aux = { frameIdToPoseMap }
 
     for (const instance of this.instances) {
-      await instance.getMetadata(metadataBuilder, aux);
+      instance.getMetadata(metadataBuilder, aux);
     }
 
     this.metadata = metadataBuilder.getMetadata();

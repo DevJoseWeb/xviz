@@ -16,10 +16,8 @@
 import {open, TimeUtil} from 'rosbag';
 import {quaternionToEuler} from '../common/quaternion';
 
-import {XVIZMetadataBuilder} from '@xviz/builder';
-import {XVIZEnvelope} from '@xviz/io';
 
-export class XVIZROSBag {
+export class ROSBag {
   // topicConfig should be provided  else simply map all topics to a matching converter
   constructor(bagPath, topicConfig = {}) {
     this.bagPath = bagPath;
@@ -27,22 +25,21 @@ export class XVIZROSBag {
 
     this.keyTopic = topicConfig.keyTopic || null;
     this.topics = topicConfig.topics;
+
+    this.bagContext = {};
   }
 
   // Open the ROS Bag and collect information
   async init(ros2xviz) {
     const bag = await open(this.bagPath);
 
-    const context = {};
-    await this._initBag(context, bag);
+    await this._initBag(bag);
 
     this.topicMessageTypes = this._gatherTopics(bag);
 
-    this._initTopics(context, this.topicMessageTypes, ros2xviz);
+    this._initTopics(this.topicMessageTypes, ros2xviz);
 
-    const metadata = await this._initMetadata(context, ros2xviz);
-
-    return metadata;
+    return true;
   }
 
   /**
@@ -56,12 +53,12 @@ export class XVIZROSBag {
    *   end_time,
    *   origin: map origin
    */
-  async _initBag(context, bag) {
+  async _initBag(bag) {
     const TF = '/tf';
     const TF_STATIC = '/tf_static';
 
-    context.start_time = TimeUtil.toDate(bag.startTime).getTime() / 1e3;
-    context.end_time = TimeUtil.toDate(bag.endTime).getTime() / 1e3;
+    this.bagContext.start_time = TimeUtil.toDate(bag.startTime).getTime() / 1e3;
+    this.bagContext.end_time = TimeUtil.toDate(bag.endTime).getTime() / 1e3;
 
     const frameIdToPoseMap = {};
     await bag.readMessages({topics: [TF, TF_STATIC]}, ({topic, message}) => {
@@ -73,7 +70,7 @@ export class XVIZROSBag {
       });
     });
 
-    context.frameIdToPoseMap = frameIdToPoseMap;
+    this.bagContext.frameIdToPoseMap = frameIdToPoseMap;
   }
 
   _gatherTopics(bag) {
@@ -105,24 +102,15 @@ export class XVIZROSBag {
 
   // Using topics and message type, ensure we create a converter
   // for each topic.
-  _initTopics(context, topicMessageTypes, ros2xviz) {
-    // context { frameIdToPoseMap, origin }
-    ros2xviz.initializeConverters(topicMessageTypes, context);
+  _initTopics(topicMessageTypes, ros2xviz) {
+    ros2xviz.initializeConverters(topicMessageTypes, this.bagContext);
   }
 
-  async _initMetadata(context, ros2xviz) {
-    const xvizMetadataBuilder = new XVIZMetadataBuilder();
-    await ros2xviz.buildMetadata(xvizMetadataBuilder, context);
+  getMetadata(metadataBuilder, ros2xviz) {
+    ros2xviz.buildMetadata(metadataBuilder, this.bagContext);
 
-    const metadata = xvizMetadataBuilder.getMetadata();
-
-    metadata.log_info = {
-      start_time: context.start_time,
-      end_time: context.end_time
-    };
-
-    this.xvizMetadata = XVIZEnvelope.Metadata(metadata);
-    return this.xvizMetadata;
+    metadataBuilder.startTime(this.bagContext.start_time);
+    metadataBuilder.endTime(this.bagContext.end_time);
   }
 
   // Synchronize xviz messages by timestep

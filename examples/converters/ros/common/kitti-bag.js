@@ -13,20 +13,21 @@
 // limitations under the License.
 /* global Buffer */
 /* eslint-disable camelcase */
-import {XVIZROSBag} from '@xviz/ros';
+import {ROSBag} from '@xviz/ros';
 import {XVIZUIBuilder} from '@xviz/builder';
 
-// We subclass from the XVIZROSBag
+// We subclass from the ROSBag
 // and override the `initMetadata` to add our own
 // entries for UI elements.
-export class KittiBag extends XVIZROSBag {
+export class KittiBag extends ROSBag {
   constructor(bagPath, topicConfig) {
     super(bagPath, topicConfig);
   }
 
   // could override and skip this entirely
-  async _initMetadata(context, ros2xviz) {
-    const metadata = await super._initMetadata(context, ros2xviz);
+  getMetadata(builder, ros2xviz) {
+    super.getMetadata(builder, ros2xviz);
+
     const FORWARD_CENTER = '/vehicle/camera/center_front';
 
     const ui = new XVIZUIBuilder({});
@@ -42,7 +43,6 @@ export class KittiBag extends XVIZROSBag {
     cam_panel.child(video);
     ui.child(cam_panel);
 
-    metadata.data.ui_config = ui.getUI();
-    return metadata;
+    builder.ui(ui);
   }
 }

@@ -13,8 +13,9 @@
 // limitations under the License.
 /* global console */
 /* eslint-disable no-console */
-import {XVIZData} from '@xviz/io';
-import {XVIZROSBag} from '../core/xviz-ros-bag';
+import {XVIZData, XVIZEnvelope} from '@xviz/io';
+import {XVIZMetadataBuilder} from '@xviz/builder';
+import {ROSBag} from '../core/xviz-ros-bag';
 
 // Generic iterator that stores context for an iterator
 class MessageIterator {
@@ -55,7 +56,7 @@ class MessageIterator {
 export class ROSBagProvider {
   constructor({root, options}) {
     this.bagPath = root.endsWith('.bag') ? root : `${root}.bag`;
-    this.BagClass = (options && options.BagClass) || XVIZROSBag;
+    this.BagClass = (options && options.BagClass) || ROSBag;
 
     // These likely come from ROSBagProvider arguments passed
     // when added to the XVIZProviderFactory
@@ -66,6 +67,7 @@ export class ROSBagProvider {
     this.options = options || {};
     this.metadata = null;
     this.ros2xviz = null;
+    this.isValid = false;
 
     if (!this.ros2xvizFactory) {
       throw new Error('The ROSBagProvider requires a ROS2XVIZFactory instance');
@@ -73,7 +75,7 @@ export class ROSBagProvider {
   }
 
   log(msg) {
-    const logger = this.options;
+    const {logger} = this.options;
     if (logger && logger.info) {
       logger.info(msg);
     }
@@ -87,7 +89,7 @@ export class ROSBagProvider {
       this.bag = new this.BagClass(this.bagPath, this.topicConfig, this.options);
 
       if (this.bag) {
-        this.metadata = await this.bag.init(this.ros2xviz);
+        this.isValid = await this.bag.init(this.ros2xviz);
       }
     } catch (err) {
       console.log(err);
@@ -95,11 +97,23 @@ export class ROSBagProvider {
   }
 
   valid() {
-    return Boolean(this.bag) && this.metadata;
+    return this.isValid;
   }
 
   xvizMetadata() {
-    return new XVIZData(this.metadata);
+    if (!this.metadata) {
+      const xvizMetadataBuilder = new XVIZMetadataBuilder();
+      this.bag.getMetadata(xvizMetadataBuilder, this.ros2xviz);
+
+      const rawMetadata = xvizMetadataBuilder.getMetadata();
+      this.metadata = XVIZEnvelope.Metadata(rawMetadata);
+    }
+
+    if (this.metadata) {
+      return new XVIZData(this.metadata);
+    }
+
+    return null;
   }
 
   getMessageIterator(startTime, endTime) {
