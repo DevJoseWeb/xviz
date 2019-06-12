@@ -30,6 +30,6 @@ export {
   VisualizationMarkerArray,
 
   // All the above converters in an array
-  defaultConverters
+  DEFAULT_CONVERTERS
 } from './messages';
 export {ROS2XVIZFactory} from './core/ros-2-xviz-factory';

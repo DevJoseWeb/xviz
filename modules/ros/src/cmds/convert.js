@@ -19,7 +19,7 @@ import {XVIZProviderFactory} from '@xviz/io';
 
 import {ROS2XVIZFactory} from '../core/ros-2-xviz-factory';
 import {ROSBagProvider} from '../providers/rosbag-provider';
-import {defaultConverters} from '../messages';
+import {DEFAULT_CONVERTERS} from '../messages';
 
 import process from 'process';
 import fs from 'fs';
@@ -151,7 +151,7 @@ async function registerROSBagProvider(bagPath, rosConfig, args) {
     }
   }
 
-  const ros2xvizFactory = new ROS2XVIZFactory(defaultConverters);
+  const ros2xvizFactory = new ROS2XVIZFactory(DEFAULT_CONVERTERS);
   const rosbagProviderConfig = {
     ...config,
     ros2xvizFactory

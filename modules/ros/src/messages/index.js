@@ -33,7 +33,7 @@ export {
   VisualizationMarkerArray
 };
 
-export const defaultConverters = [
+export const DEFAULT_CONVERTERS = [
   GeometryPoseStamped,
   NavPath,
   SensorPointCloud2,
