@@ -11,16 +11,16 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
-import {ROS2XVIZ} from './ros-2-xviz';
+import {ROS2XVIZConverter} from './ros-2-xviz';
 
 // Provided a list of converters the factory can create an instance of
-// a ROS2XVIZ object along with the mapping config.
+// a ROS2XVIZConverter object along with the mapping config.
 export class ROS2XVIZFactory {
   constructor(converters) {
     this.converters = converters;
   }
 
   create(mapping, options) {
-    return new ROS2XVIZ(this.converters, mapping, options);
+    return new ROS2XVIZConverter(this.converters, mapping, options);
   }
 }

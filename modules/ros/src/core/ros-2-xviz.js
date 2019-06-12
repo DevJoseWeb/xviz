@@ -17,7 +17,7 @@
 
 import {XVIZBuilder} from '@xviz/builder';
 
-export class ROS2XVIZ {
+export class ROS2XVIZConverter {
   constructor(converters, mapping, options) {
     // options: {logger}
     this.options = options;
@@ -58,7 +58,7 @@ export class ROS2XVIZ {
 
     const {converters, mapping} = this;
 
-    this.log(`ROS2XVIZ setting up converter for ${topic}`);
+    this.log(`ROS2XVIZConverter setting up converter for ${topic}`);
     let topicMapped = false;
     if (mapping) {
       // We can map 1 ROS message to many converters if we are mapping individual fields
@@ -71,13 +71,13 @@ export class ROS2XVIZ {
 
         let Converter = null;
         if (entry.topic === topic) {
-          this.log(`ROS2XVIZ Mapping for ${topic}`);
+          this.log(`ROS2XVIZConverter Mapping for ${topic}`);
           // Specific converter by name
           if (entry.name) {
             Converter = converters.find(converter => converter.name === entry.name);
             if (!Converter) {
               this.log(
-                `ROS2XVIZ cannot find the converter with name ${entry.name} for topic ${topic}`
+                `ROS2XVIZConverter cannot find the converter with name ${entry.name} for topic ${topic}`
               );
             }
           } else {
@@ -85,7 +85,7 @@ export class ROS2XVIZ {
             Converter = converters.find(converter => converter.messageType === type);
             if (!Converter) {
               this.log(
-                `ROS2XVIZ cannot find the converter for message type ${type} for topic ${topic}`
+                `ROS2XVIZConverter cannot find the converter for message type ${type} for topic ${topic}`
               );
             }
           }
@@ -105,7 +105,7 @@ export class ROS2XVIZ {
       // converter by message type
       const Converter = converters.find(converter => converter.messageType === type);
       if (!Converter) {
-        this.log(`ROS2XVIZ cannot find the converter for message type ${type} for topic ${topic}`);
+        this.log(`ROS2XVIZConverter cannot find the converter for message type ${type} for topic ${topic}`);
       } else {
         // aux could have field, xvizStream, origin, etc
         const config = {...aux, topic};
@@ -131,7 +131,7 @@ export class ROS2XVIZ {
   }
 
   async buildMetadata(metadataBuilder, aux) {
-    this.log(`ROS2XVIZ buildMetadata`);
+    this.log(`ROS2XVIZConverter buildMetadata`);
     // aux = { frameIdToPoseMap }
 
     for (const instance of this.instances) {
