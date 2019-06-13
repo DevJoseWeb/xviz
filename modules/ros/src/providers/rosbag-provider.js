@@ -149,7 +149,7 @@ export class ROSBagProvider {
       return null;
     }
 
-    const dataset = await this.bag.readMessageByTime(start, end);
+    const dataset = await this.bag.readMessages(start, end);
     const msg = await this.ros2xviz.buildMessage(dataset);
 
     if (msg) {

@@ -114,7 +114,7 @@ export class ROSBag {
   }
 
   // Synchronize xviz messages by timestep
-  async readMessageByTime(start, end) {
+  async readMessage(start, end) {
     const bag = await open(this.bagPath);
     const frame = {};
 
