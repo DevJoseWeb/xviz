@@ -93,17 +93,6 @@ export class VisualizationMarkerArray extends Converter {
         stroke_width_min_pixels: 1
       })
 
-      /*
-      .stream(this.POLYGON_STREAM)
-      .coordinate('IDENTITY')
-      .category('primitive')
-      .type('polygon')
-      .streamStyle({
-        extruded: true,
-        height: 0.2
-      })
-    */
-
       .stream(this.SPHERE_STREAM)
       .coordinate('IDENTITY')
       .category('primitive')
