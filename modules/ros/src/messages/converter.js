@@ -28,10 +28,6 @@ export default class Converter {
 
     if (!this.config.xvizStream) {
       this.config.xvizStream = this.config.topic;
-
-      if (this.config.field) {
-        this.config.xvizStream += `.${this.config.field}`;
-      }
     }
   }
 
@@ -41,19 +37,6 @@ export default class Converter {
 
   get xvizStream() {
     return this.config.xvizStream;
-  }
-
-  // TODO: How will this work.  If we have an object or array
-  // so a textual path like object.pose.orientation would have
-  // a field 'pose.orientation'
-  //
-  // but what is the format when it is an array and how
-  // do we map it in the actual converters
-  // something like 'poses[].orientation' and we
-  // have an accessor that returns all the data
-  // (and we can have multiple message too)
-  get messageField() {
-    return this.config.field;
   }
 
   async convertMessage(frame, xvizBuilder) {
