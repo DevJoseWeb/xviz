@@ -1,8 +1,7 @@
 # ROS data conversion into XVIZ
 
-This module supports converting ROS bags into XVIZ. The approach taken is to create converters for
-each ROS message. The message types can be obtained from the ROS bag and automatic conversion for
-message can be setup.
+This module supports converting ROS bag data into XVIZ.
 
-Converting all messages is not generally desired, as it would be expensive and users normally care
-about a specific set of core messages plus context specific messages.
+See an example of ROS conversion [here](https://github.com/uber/xviz/tree/master/examples/converters/ros)
+
+See the full documenation for the @xviz/ros module at [AVS.auto](https://avs.auto/#/xviz/api-reference/xviz-ros/overview)
