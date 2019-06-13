@@ -15,7 +15,7 @@ export {ROSBag} from './core/xviz-ros-bag';
 export {ROSBagProvider} from './providers/rosbag-provider';
 export {quaternionToEuler} from './common/quaternion';
 // TODO: move this to common or core
-export {ROSXVIZConverter} from './cmds';
+export {ConvertMain} from './cmds';
 
 export {
   Converter,

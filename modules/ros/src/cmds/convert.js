@@ -51,9 +51,9 @@ function deleteDirRecursive(parentDir) {
   fs.rmdirSync(parentDir);
 }
 
-export class ROSXVIZConverter {
+export class ConvertMain {
   async execute(args, providerFactory = XVIZProviderFactory) {
-    const {bag: bagPath, dir: outputDir, start, end} = args;
+    const {bag: root, dir: outputDir, start, end} = args;
 
     try {
       deleteDirRecursive(outputDir);
@@ -62,7 +62,6 @@ export class ROSXVIZConverter {
     }
     createDir(outputDir);
 
-    const root = bagPath;
     const source = new FileSource(root);
 
     const provider = await providerFactory.open({
@@ -165,6 +164,6 @@ async function registerROSBagProvider(bagPath, rosConfig, args) {
 export async function Convert(args) {
   await registerROSBagProvider(args.bag, args.rosConfig, args);
 
-  const converter = new ROSXVIZConverter();  
+  const converter = new ConvertMain();
   await converter.execute(args);
 }
