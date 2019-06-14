@@ -27,7 +27,7 @@ This should place the bag file at `data/kitti/kitti_2011_09_26_drive_0005_synced
 
 Note that the KITTI to ROS Bag conversion only supports pose, point cloud, and camera images.
 
-## Running the example
+## Running the server
 
 The following commands will ensure all modules are built, and then start the custom
 server that adds support for the custom ROS Bag processing.
@@ -37,7 +37,7 @@ xviz$ yarn bootstrap
 xviz$ cd examples/converters/ros
 
 xviz/examples/converters/ros$ yarn
-xviz/examples/converters/ros$ node ./server-main.js -d ../../../data/kitti --rosConfig kitti.json
+xviz/examples/converters/ros$ node server-main.js -d ../../../data/kitti --rosConfig kitti.json
 ```
 
 You should see `xvizserver-log: Listening on port 3000`
@@ -55,3 +55,14 @@ streetscape.gl/test/apps/viewer$ yarn start-streaming-local
 
 Navigate to the url and use the filename of the bag file as the path in the URL. Assuming the file
 `kitti_2011_09_26_drive_0005_synced.bag`, then go to http://localhost:8080/kitti_2011_09_26_drive_0005_synced
+
+## Running the conversion cli
+
+Converting ROS data at runtime may not always be performant enough to be a viable option. Offline 
+conversion is also supported.
+
+Using the same KITTI bag file we can convert the ROS bag and save the XVIZ data to files.
+
+```
+xviz/examples/converters/ros$ node cli-main.js -d ../../../data/kitti/ros-xviz --rosConfig kitti.json ../../../data/kitti/kitti_2011_09_26_drive_0005_synced.bag
+```
