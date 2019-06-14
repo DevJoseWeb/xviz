@@ -114,7 +114,7 @@ export class ROSBag {
   }
 
   // Synchronize xviz messages by timestep
-  async readMessage(start, end) {
+  async readMessages(start, end) {
     const bag = await open(this.bagPath);
     const frame = {};
 
@@ -149,46 +149,4 @@ export class ROSBag {
 
     return frame;
   }
-
-  // TODO: move this to a differrent BagClass
-  // We synchronize messages along messages in the `keyTopic`.
-  /*
-  async readMessageByKeyTopic(start, end) {
-    const bag = await open(this.bagPath);
-    let frame = {};
-
-    async function flushMessage() {
-      if (frame.keyTopic) {
-        // This needs to be address, was used to flush on keyTopic message to sync
-        // await onMessage(frame);
-        frame = {};
-      }
-    }
-
-    const options = {
-      startTime: TimeUtil.fromDate(new Date(start * 1e3)),
-      endTime: TimeUtil.fromDate(new Date(end * 1e3))
-    };
-
-    if (this.topics) {
-      options.topics = this.topics;
-    }
-
-    await bag.readMessages(options, async result => {
-      // rosbag.js reuses the data buffer for subsequent messages, so we need to make a copy
-      if (result.message.data) {
-        result.message.data = Buffer.from(result.message.data);
-      }
-      if (result.topic === this.keyTopic) {
-        await flushMessage();
-        frame.keyTopic = result;
-      }
-      frame[result.topic] = frame[result.topic] || [];
-      frame[result.topic].push(result);
-    });
-
-    // Flush the final frame
-    await flushMessage();
-  }
-  */
 }

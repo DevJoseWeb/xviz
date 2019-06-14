@@ -15,7 +15,7 @@
 /* eslint-disable no-console */
 import {XVIZData, XVIZEnvelope} from '@xviz/io';
 import {XVIZMetadataBuilder} from '@xviz/builder';
-import {ROSBag} from '../core/xviz-ros-bag';
+import {ROSBag} from '../core/ros-bag';
 
 // Generic iterator that stores context for an iterator
 class MessageIterator {
@@ -90,6 +90,9 @@ export class ROSBagProvider {
 
       if (this.bag) {
         this.isValid = await this.bag.init(this.ros2xviz);
+        if (this.isValid) {
+          this._getMetadata();
+        }
       }
     } catch (err) {
       console.log(err);
@@ -100,13 +103,19 @@ export class ROSBagProvider {
     return this.isValid;
   }
 
-  xvizMetadata() {
-    if (!this.metadata) {
+  _getMetadata() {
+    if (this.valid) {
       const xvizMetadataBuilder = new XVIZMetadataBuilder();
       this.bag.getMetadata(xvizMetadataBuilder, this.ros2xviz);
 
       const rawMetadata = xvizMetadataBuilder.getMetadata();
       this.metadata = XVIZEnvelope.Metadata(rawMetadata);
+    }
+  }
+
+  xvizMetadata() {
+    if (!this.metadata) {
+      this._getMetadata();
     }
 
     if (this.metadata) {
